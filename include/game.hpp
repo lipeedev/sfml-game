@@ -5,13 +5,15 @@
 
 class Game {
 private:
-
     sf::RenderWindow* window;
     sf::Event ev;
     sf::VideoMode videoMode;
 
+    sf::RectangleShape enemy;
+
     void initVariables();
     void initWindow();
+    void initEnemies();
 
 public:
     Game();

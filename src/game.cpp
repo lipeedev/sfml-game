@@ -7,14 +7,25 @@ void Game::initVariables() {
 void Game::initWindow() {
     this->videoMode.width = 800;
     this->videoMode.height = 600;
-
     this->window = new sf::RenderWindow(this->videoMode, "Game Window");
+    this->window->setFramerateLimit(60);
+}
+
+
+void Game::initEnemies() {
+    this->enemy.setPosition(10.f, 10.f);
+    this->enemy.setSize(sf::Vector2f(100.f, 100.f));
+    this->enemy.setScale(0.5f, 0.5f);
+    this->enemy.setFillColor(sf::Color::Red);
+    this->enemy.setOutlineColor(sf::Color::Cyan);
+    this->enemy.setOutlineThickness(1.f);
 }
 
 
 Game::Game() {
     this->initVariables();
     this->initWindow();
+    this->initEnemies();
 }
 
 Game::~Game() {
@@ -37,13 +48,13 @@ void Game::pollEvents() {
 
 
 void Game::update() {
-  this->pollEvents();
+    this->pollEvents();
 }
 
 
 void Game::render() {
     this->window->clear();
-    
+    this->window->draw(this->enemy);
     this->window->display();
 }
 
