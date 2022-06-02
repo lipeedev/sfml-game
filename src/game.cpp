@@ -24,8 +24,6 @@ void Game::initEnemies() {
     this->enemy.setFillColor(sf::Color::Red);
     this->enemy.setOutlineColor(sf::Color::Cyan);
     this->enemy.setOutlineThickness(1.f);
-
-
 }
 
 
