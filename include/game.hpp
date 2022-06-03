@@ -10,7 +10,9 @@ private:
     sf::RenderWindow* window;
     sf::Event ev;
     sf::VideoMode videoMode;
+
     sf::Vector2i mousePosWindow;
+    sf::Vector2f mousePosView;
 
     float enemySpawnTimer;
     float enemySpawnTimerMax;
