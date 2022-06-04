@@ -6,7 +6,7 @@ int main(int argc, char const *argv[]) {
     
     Game game;
 
-    while (game.isRunning()) {
+    while (game.isRunning() && !game.getEndGame()) {
         game.update();
         game.render();
     }
