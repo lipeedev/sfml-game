@@ -4,6 +4,8 @@
 #include <SFML/Graphics.hpp>
 #include <vector>
 #include <ctime>
+#include <sstream>
+#include <iostream>
 
 class Game {
 private:
@@ -13,6 +15,10 @@ private:
 
     sf::Vector2i mousePosWindow;
     sf::Vector2f mousePosView;
+
+    sf::Font font;
+
+    sf::Text uiText;
 
     bool endGame;
     float enemySpawnTimer;
@@ -28,6 +34,8 @@ private:
     void initVariables();
     void initWindow();
     void initEnemies();
+    void initFonts();
+    void initText();
 
 public:
     Game();
@@ -41,8 +49,10 @@ public:
     void updateMousePosition();
     void updateEnemies();
     void update();
-    void renderEnemies();
+    void renderEnemies(sf::RenderTarget &target);
     void render();
+    void renderText(sf::RenderTarget &target);
+    void updateText();
 };
 
 #endif

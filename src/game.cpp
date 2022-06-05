@@ -30,9 +30,26 @@ void Game::initEnemies() {
 }
 
 
+void Game::initFonts() {
+    if(!this->font.loadFromFile("fonts/FiraCode-Light.ttf")) {
+        std::cout << "ERROR::GAME::INITFONTS::Failed to load font!" << std::endl;
+    }
+}
+
+
+void Game::initText() {
+    this->uiText.setFont(this->font);
+    this->uiText.setCharacterSize(20);
+    this->uiText.setFillColor(sf::Color::White);
+    this->uiText.setString("NONE");
+}
+
+
 Game::Game() {
     this->initVariables();
     this->initWindow();
+    this->initFonts();
+    this->initText();
     this->initEnemies();
 }
 
@@ -124,6 +141,7 @@ void Game::update() {
 
     if (!this->endGame) {
         this->updateMousePosition();
+        this->updateText();
         this->updateEnemies();
     }
 
@@ -131,16 +149,30 @@ void Game::update() {
 }
 
 
-void Game::renderEnemies() {
+void Game::renderEnemies(sf::RenderTarget &target) {
      for (auto &e : this->enemies) {
-        this->window->draw(e);
+        target.draw(e);
     }
 }
 
 
 void Game::render() {
     this->window->clear();
-    this->renderEnemies();
+    this->renderEnemies(*this->window);
+    this->renderText(*this->window);
     this->window->display();
 }
 
+
+void Game::renderText(sf::RenderTarget &target) {
+   target.draw(this->uiText);
+}
+
+
+void Game::updateText() {
+    std::stringstream ss;
+    ss << "POINTS: " << this->points << std::endl
+        << "HEALTH: " << this->health << std::endl;
+
+    this->uiText.setString(ss.str());
+}
