@@ -50,8 +50,9 @@ public:
     void updateEnemies();
     void update();
     void renderEnemies(sf::RenderTarget &target);
-    void render();
+    void render(bool gameOver);
     void renderText(sf::RenderTarget &target);
+    void renderEndGame(sf::RenderTarget &target);
     void updateText();
 };
 

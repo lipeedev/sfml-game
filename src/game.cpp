@@ -5,8 +5,8 @@ void Game::initVariables() {
 
     this->endGame = false;
     this->points = 0;
-    this->health = 10;
-    this->enemySpawnTimerMax = 10.f;
+    this->health = 20;
+    this->enemySpawnTimerMax = 20.f;
     this->enemySpawnTimer = this->enemySpawnTimerMax;
     this->maxEnemies = 6;
     this->mouseHelds = false;
@@ -15,7 +15,7 @@ void Game::initVariables() {
 void Game::initWindow() {
     this->videoMode.width = 800;
     this->videoMode.height = 600;
-    this->window = new sf::RenderWindow(this->videoMode, "Game Window");
+    this->window = new sf::RenderWindow(this->videoMode, "Game Window", sf::Style::Titlebar | sf::Style::Close);
     this->window->setFramerateLimit(60);
 }
 
@@ -74,7 +74,36 @@ void Game::spawnEnemy() {
         0.f
     );
 
-    this->enemy.setFillColor(sf::Color::Green);
+    int type = rand() % 5;
+
+    switch (type) {
+        case 0:
+            this->enemy.setSize(sf::Vector2f(20.f, 20.f));
+            this->enemy.setFillColor(sf::Color::Magenta);
+            break;
+        case 1:
+            this->enemy.setSize(sf::Vector2f(30.f, 30.f));
+            this->enemy.setFillColor(sf::Color::Blue);
+            break;
+        case 2:
+            this->enemy.setSize(sf::Vector2f(50.f, 50.f));
+            this->enemy.setFillColor(sf::Color::Cyan);
+            break;
+        case 3:
+            this->enemy.setSize(sf::Vector2f(70.f, 70.f));
+            this->enemy.setFillColor(sf::Color::Green);
+            break;
+        case 4:
+            this->enemy.setSize(sf::Vector2f(100.f, 100.f));
+            this->enemy.setFillColor(sf::Color::Red);
+            break;
+
+        default:
+            this->enemy.setSize(sf::Vector2f(100.f, 100.f));
+            this->enemy.setFillColor(sf::Color::Yellow);
+            break;
+    }
+
     this->enemies.push_back(this->enemy);
 }
 
@@ -124,9 +153,23 @@ void Game::updateEnemies() {
 
             for (int i = 0; i < this->enemies.size() && !deleted; i++) {
                 if (this->enemies[i].getGlobalBounds().contains(this->mousePosView)) {
+
+                    if (this->enemies[i].getFillColor() == sf::Color::Magenta) {
+                        this->points += 10;
+                        this->health += 5;
+                    } else if (this->enemies[i].getFillColor() == sf::Color::Blue) {
+                        this->points += 7;
+                        this->health += 3;
+                    } else if (this->enemies[i].getFillColor() == sf::Color::Cyan) {
+                        this->points += 5;
+                    } else if (this->enemies[i].getFillColor() == sf::Color::Green) {
+                        this->points += 3;
+                    } else if (this->enemies[i].getFillColor() == sf::Color::Red) {
+                        this->points += 1;
+                    }
+
                     deleted = true;
                     this->enemies.erase(this->enemies.begin() + i);
-                    this->points += 1.f;
                 }   
             }
         }
@@ -156,16 +199,30 @@ void Game::renderEnemies(sf::RenderTarget &target) {
 }
 
 
-void Game::render() {
+void Game::render(bool gameOver) {
     this->window->clear();
-    this->renderEnemies(*this->window);
-    this->renderText(*this->window);
+
+    if (gameOver) this->renderEndGame(*this->window);
+    else {
+        this->renderEnemies(*this->window);
+        this->renderText(*this->window);
+    }
+
     this->window->display();
 }
 
 
 void Game::renderText(sf::RenderTarget &target) {
-   target.draw(this->uiText);
+       target.draw(this->uiText);
+}
+
+void Game::renderEndGame(sf::RenderTarget &target) {
+       sf::Text gameOverTxt;
+       gameOverTxt.setFont(this->font);
+       gameOverTxt.setPosition(sf::Vector2f(300.f, 250.f));
+       gameOverTxt.setString("GAME OVER");
+
+       target.draw(gameOverTxt);
 }
 
 
