@@ -19,13 +19,14 @@ private:
     sf::Font font;
 
     sf::Text uiText;
+    sf::Text gameOverTxt;
 
     bool endGame;
     float enemySpawnTimer;
     float enemySpawnTimerMax;
     int maxEnemies;
     unsigned int points;
-    unsigned int health;
+    int health;
     bool mouseHelds;
 
     std::vector<sf::RectangleShape> enemies;
@@ -36,6 +37,7 @@ private:
     void initEnemies();
     void initFonts();
     void initText();
+    void initEndGameText();
 
 public:
     Game();

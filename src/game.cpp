@@ -25,8 +25,6 @@ void Game::initEnemies() {
     this->enemy.setSize(sf::Vector2f(100.f, 100.f));
     this->enemy.setScale(0.5f, 0.5f);
     this->enemy.setFillColor(sf::Color::Red);
-    this->enemy.setOutlineColor(sf::Color::Cyan);
-    this->enemy.setOutlineThickness(1.f);
 }
 
 
@@ -40,8 +38,14 @@ void Game::initFonts() {
 void Game::initText() {
     this->uiText.setFont(this->font);
     this->uiText.setCharacterSize(20);
-    this->uiText.setFillColor(sf::Color::White);
     this->uiText.setString("NONE");
+}
+
+
+void Game::initEndGameText() {
+       this->gameOverTxt.setFont(this->font);
+       this->gameOverTxt.setPosition(sf::Vector2f(300.f, 250.f));
+       this->gameOverTxt.setString("GAME OVER");
 }
 
 
@@ -141,7 +145,7 @@ void Game::updateEnemies() {
 
         if (this->enemies[i].getPosition().y > this->window->getSize().y) {
             this->enemies.erase(this->enemies.begin() + i);
-            if (this->health > 0) this->health -= 1;
+            if (this->health >= 0) this->health -= 1;
         }
     }
      
@@ -188,7 +192,7 @@ void Game::update() {
         this->updateEnemies();
     }
 
-    if (this->health == 0) this->endGame = true;
+    if (this->health <= 0) this->endGame = true;
 }
 
 
@@ -217,12 +221,10 @@ void Game::renderText(sf::RenderTarget &target) {
 }
 
 void Game::renderEndGame(sf::RenderTarget &target) {
-       sf::Text gameOverTxt;
-       gameOverTxt.setFont(this->font);
-       gameOverTxt.setPosition(sf::Vector2f(300.f, 250.f));
-       gameOverTxt.setString("GAME OVER");
-
-       target.draw(gameOverTxt);
+       this->updateText();
+       this->initEndGameText();
+       target.draw(this->uiText);
+       target.draw(this->gameOverTxt);
 }
 
 
